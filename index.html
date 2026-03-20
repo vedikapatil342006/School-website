@@ -1,0 +1,127 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: #f5f9ff; }
+    section { padding: 60px 20px; }
+    h2 { text-align: center; margin-bottom: 30px; }
+
+    /* Loader */
+    #loader { position: fixed; width: 100%; height: 100%; background: white; display:flex; justify-content:center; align-items:center; z-index:999; }
+    .spinner { width:50px; height:50px; border:5px solid #ddd; border-top:5px solid #3498db; border-radius:50%; animation:spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg);} }
+
+    /* Navbar */
+    nav { position: sticky; top:0; background: linear-gradient(90deg,#4facfe,#00f2fe); display:flex; justify-content:space-between; padding:15px 30px; color:white; }
+    nav ul { display:flex; list-style:none; }
+    nav ul li { margin:0 10px; cursor:pointer; }
+    nav ul li:hover { text-decoration:underline; }
+
+    /* Hero */
+    .hero { height:90vh; display:flex; flex-direction:column; justify-content:center; align-items:center; background: linear-gradient(to right,#89f7fe,#66a6ff); color:white; }
+    .hero button { margin-top:20px; padding:10px 20px; border:none; background:white; border-radius:20px; cursor:pointer; }
+    .hero button:hover { transform:scale(1.1); }
+
+    /* Login */
+    .login-box { max-width:300px; margin:20px auto; background:white; padding:20px; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.1); }
+    .login-box input { width:100%; margin:10px 0; padding:10px; }
+    .login-box button { width:100%; padding:10px; background:#3498db; color:white; border:none; border-radius:10px; cursor:pointer; }
+
+    /* Features */
+    .features { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; }
+    .card { background:white; padding:20px; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.1); text-align:center; transition:0.3s; }
+    .card:hover { transform:translateY(-10px); }
+
+    /* Dashboard */
+    .tabs { text-align:center; }
+    .tabs button { margin:5px; padding:10px; }
+    .tab-content { display:none; }
+    .active { display:block; }
+
+    /* Notice */
+    .notice { height:150px; overflow:hidden; background:#fff8dc; padding:10px; }
+    .notice p { animation:scroll 10s linear infinite; }
+    @keyframes scroll { 0%{transform:translateY(100%);} 100%{transform:translateY(-100%);} }
+
+    footer { background:#333; color:white; text-align:center; padding:20px; }
+  </style></head>
+<body><div id="loader"><div class="spinner"></div></div><nav>
+  <h2>My School</h2>
+  <ul>
+    <li>Home</li>
+    <li>Login</li>
+    <li>Dashboard</li>
+  </ul>
+</nav><section class="hero">
+  <h1 id="typing"></h1>
+  <button onclick="scrollToLogin()">Login Now</button>
+</section><!-- LOGIN SECTION --><section id="login">
+  <h2>Login</h2>
+  <div class="login-box">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <select id="role">
+      <option value="parent">Parent</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button onclick="login()">Login</button>
+  </div>
+</section><!-- Dashboard --><section id="dashboard" style="display:none;">
+  <h2>Dashboard</h2>
+  <div class="tabs">
+    <button onclick="showTab('parent')">Parent</button>
+    <button onclick="showTab('admin')">Admin</button>
+  </div>  <div id="parent" class="tab-content active">
+    <p>Attendance: 90%</p>
+    <p>Marks: 85%</p>
+    <p>Homework: Completed</p>
+    <p>Notice: Exam on Monday</p>
+  </div>  <div id="admin" class="tab-content">
+    <input type="text" id="noticeInput" placeholder="Add Notice">
+    <button onclick="addNotice()">Add Notice</button>
+  </div>
+</section><section>
+  <h2>Notice Board</h2>
+  <div class="notice" id="noticeList">
+    <p>Welcome to school portal</p>
+  </div>
+</section><footer>
+  <p>Contact: school@email.com</p>
+</footer><script>
+  window.onload = () => document.getElementById('loader').style.display='none';
+
+  const text="Empowering Young Minds";
+  let i=0;
+  function typing(){ if(i<text.length){ document.getElementById('typing').innerHTML+=text.charAt(i); i++; setTimeout(typing,100);} }
+  typing();
+
+  function scrollToLogin(){ document.getElementById('login').scrollIntoView({behavior:'smooth'}); }
+
+  function login(){
+    const role=document.getElementById('role').value;
+    document.getElementById('dashboard').style.display='block';
+    document.getElementById('login').style.display='none';
+
+    if(role==='parent'){
+      showTab('parent');
+    } else {
+      showTab('admin');
+    }
+  }
+
+  function showTab(tab){
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+  }
+
+  function addNotice(){
+    const input=document.getElementById('noticeInput').value;
+    const p=document.createElement('p');
+    p.textContent=input;
+    document.getElementById('noticeList').appendChild(p);
+  }
+</script></body>
+</html>
